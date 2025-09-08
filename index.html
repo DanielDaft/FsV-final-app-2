@@ -2727,8 +2727,10 @@ function renderStudentDetail(studentId) {
     <div class="detail-header">
       <button class="back-btn" onclick="renderStudentList()">←</button>
       <div class="detail-title">${student.name} ${student.surname}</div>
-      <button class="btn-primary" onclick="exportToPDF('${student.id}')" style="margin-right: 8px;">📄 PDF exportieren</button>
-      <button class="edit-btn" onclick="showEditStudentDialog('${student.id}')" title="Bearbeiten">✏️</button>
+      <div class="header-right">
+        <button class="btn-primary" onclick="exportToPDF('${student.id}')" style="margin-right: 8px;">📄 PDF exportieren</button>
+        <button class="edit-btn" onclick="showEditStudentDialog('${student.id}')" title="Bearbeiten">✏️</button>
+      </div>
     </div>
     <div class="container">
       ${renderPersonalInfo(student)}
