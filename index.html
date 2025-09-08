@@ -1271,7 +1271,7 @@ to { opacity: 1; }
 }
 
 .dialog {
-background: white;
+background: var(--bg-secondary);
 border-radius: 16px;
 padding: 24px;
 max-width: 400px;
@@ -1289,7 +1289,7 @@ to { transform: scale(1); }
 
 .dialog h2 {
 margin-bottom: 20px;
-color: #1f2937;
+color: var(--text-primary);
 font-size: 20px;
 font-weight: 600;
 }
@@ -1302,22 +1302,24 @@ margin-bottom: 16px;
 display: block;
 margin-bottom: 6px;
 font-weight: 500;
-color: #374151;
+color: var(--text-primary);
 font-size: 14px;
 }
 
 .form-group input {
 width: 100%;
 padding: 12px;
-border: 2px solid #e5e7eb;
+border: 2px solid var(--border-color);
 border-radius: 8px;
 font-size: 16px;
 transition: border-color 0.2s;
+background: var(--bg-tertiary);
+color: var(--text-primary);
 }
 
 .form-group input:focus {
 outline: none;
-border-color: #2563eb;
+border-color: var(--blue-primary);
 }
 
 .dialog-buttons {
@@ -1327,20 +1329,21 @@ margin-top: 24px;
 }
 
 .btn-secondary {
-background: #f3f4f6;
-color: #374151;
+background: var(--bg-tertiary);
+color: var(--text-primary);
 padding: 12px 20px;
-border: none;
+border: 1px solid var(--border-color);
 border-radius: 8px;
 cursor: pointer;
 flex: 1;
 font-weight: 500;
 font-size: 16px;
-transition: background-color 0.2s;
+transition: all 0.2s;
 }
 
 .btn-secondary:hover {
-background: #e5e7eb;
+background: var(--bg-primary);
+border-color: var(--text-tertiary);
 }
 
 /* LOADING */
