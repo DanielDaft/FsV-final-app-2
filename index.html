@@ -3336,7 +3336,7 @@ function renderTrainingItems(sections, categoryKey, studentId) {
   const comments = getCommentsForStudent(studentId);
 
   function renderSection(sections, level = 0) {
-    return Object.entries(sections).map(([sectionKey, section]) => {
+    return Object.entries(sections).map(([sectionKey, section], index) => {
       if (section.sections) {
         return `
           <div class="mb-4 ${level > 0 ? 'ml-4' : ''}">
@@ -3347,33 +3347,64 @@ function renderTrainingItems(sections, categoryKey, studentId) {
       } else if (section.items) {
         const sectionProgress = categoryProgress[sectionKey] || {};
 
-        return `
-          <div class="mb-4 ${level > 0 ? 'ml-4' : ''}">
-            ${section.name ? `<h4 class="font-medium text-gray-700 mb-2">${section.name}</h4>` : ''}
-            ${section.items.map(item => {
-              const status = sectionProgress[item] || 'not_started';
-              const symbol = getStatusSymbol(status);
-              const statusClass = status !== 'not_started' ? status : '';
-              const commentKey = `${categoryKey}_${sectionKey}_${item}`;
-              const hasComment = comments[commentKey] && comments[commentKey].trim();
+        // Prüfe ob es sich um redundante Überschrift handelt (nur 1 Item mit gleichem Namen)
+        const isRedundantHeader = section.items.length === 1 && section.items[0] === section.name;
+        
+        if (isRedundantHeader) {
+          // Render direkt als Checkbox ohne Überschrift
+          const item = section.items[0];
+          const status = sectionProgress[item] || 'not_started';
+          const symbol = getStatusSymbol(status);
+          const statusClass = status !== 'not_started' ? status : '';
+          const commentKey = `${categoryKey}_${sectionKey}_${item}`;
+          const hasComment = comments[commentKey] && comments[commentKey].trim();
 
-              // NORMALE CHECKBOXEN FÜR ALLE KATEGORIEN (AUCH GRUNDSTUFE)
-              return `
-                <div class="progress-item">
-                  <div class="progress-checkbox ${statusClass}" 
-                       onclick="toggleProgressItem('${studentId}', '${categoryKey}', '${sectionKey}', '${item}', event)"
-                       data-category="${categoryKey}" data-item="${item}">
-                    ${symbol}
-                  </div>
-                  <span class="progress-item-text">${item}</span>
-                  <button class="comment-btn ${hasComment ? 'has-comment' : ''}" onclick="showCommentDialog('${studentId}', '${categoryKey}', '${sectionKey}', '${item}', event)" title="${hasComment ? 'Kommentar bearbeiten' : 'Kommentar hinzufügen'}">
-                    💬
-                  </button>
+          return `
+            <div class="mb-4 ${level > 0 ? 'ml-4' : ''}">
+              <div class="progress-item">
+                <div class="progress-checkbox ${statusClass}" 
+                     onclick="toggleProgressItem('${studentId}', '${categoryKey}', '${sectionKey}', '${item}', event)"
+                     data-category="${categoryKey}" data-item="${item}">
+                  ${symbol}
                 </div>
-              `;
-            }).join('')}
-          </div>
-        `;
+                <span class="progress-item-text">${item}</span>
+                <button class="comment-btn ${hasComment ? 'has-comment' : ''}" onclick="showCommentDialog('${studentId}', '${categoryKey}', '${sectionKey}', '${item}', event)" title="${hasComment ? 'Kommentar bearbeiten' : 'Kommentar hinzufügen'}">
+                  💬
+                </button>
+              </div>
+              ${index < Object.entries(sections).length - 1 ? '<div class="section-divider"></div>' : ''}
+            </div>
+          `;
+        } else {
+          // Normale Sektion mit Überschrift und mehreren Items
+          return `
+            <div class="mb-4 ${level > 0 ? 'ml-4' : ''}">
+              ${section.name ? `<h4 class="font-medium text-gray-700 mb-2">${section.name}</h4>` : ''}
+              ${section.items.map(item => {
+                const status = sectionProgress[item] || 'not_started';
+                const symbol = getStatusSymbol(status);
+                const statusClass = status !== 'not_started' ? status : '';
+                const commentKey = `${categoryKey}_${sectionKey}_${item}`;
+                const hasComment = comments[commentKey] && comments[commentKey].trim();
+
+                return `
+                  <div class="progress-item">
+                    <div class="progress-checkbox ${statusClass}" 
+                         onclick="toggleProgressItem('${studentId}', '${categoryKey}', '${sectionKey}', '${item}', event)"
+                         data-category="${categoryKey}" data-item="${item}">
+                      ${symbol}
+                    </div>
+                    <span class="progress-item-text">${item}</span>
+                    <button class="comment-btn ${hasComment ? 'has-comment' : ''}" onclick="showCommentDialog('${studentId}', '${categoryKey}', '${sectionKey}', '${item}', event)" title="${hasComment ? 'Kommentar bearbeiten' : 'Kommentar hinzufügen'}">
+                      💬
+                    </button>
+                  </div>
+                `;
+              }).join('')}
+              ${index < Object.entries(sections).length - 1 ? '<div class="section-divider"></div>' : ''}
+            </div>
+          `;
+        }
       }
       
       return '';
