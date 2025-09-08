@@ -201,6 +201,63 @@ transition: transform 0.3s ease;
 transform: scale(1.1);
 }
 
+/* ELEGANT BUTTON STYLE - BASIEREND AUF TOGGLE DESIGN */
+.btn-elegant {
+background: var(--bg-tertiary);
+border: 2px solid var(--border-color);
+border-radius: 50px;
+padding: 8px 16px;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 14px;
+font-weight: 600;
+color: var(--text-secondary);
+transition: all 0.3s ease;
+user-select: none;
+-webkit-tap-highlight-color: transparent;
+text-decoration: none;
+}
+
+.btn-elegant:hover {
+background: var(--bg-secondary);
+border-color: var(--text-tertiary);
+transform: translateY(-1px);
+}
+
+.btn-elegant .icon {
+font-size: 18px;
+transition: transform 0.3s ease;
+}
+
+.btn-elegant:hover .icon {
+transform: scale(1.1);
+}
+
+/* VARIANTEN FÜR VERSCHIEDENE BUTTON-TYPEN */
+.btn-elegant.primary {
+background: var(--blue-primary);
+border-color: var(--blue-secondary);
+color: white;
+}
+
+.btn-elegant.primary:hover {
+background: var(--blue-secondary);
+border-color: var(--blue-primary);
+}
+
+.btn-elegant.pdf {
+background: var(--orange-primary);
+border-color: var(--orange-secondary);
+color: white;
+}
+
+.btn-elegant.pdf:hover {
+background: var(--orange-secondary);
+border-color: var(--orange-primary);
+}
+
 /* STUDENT CARDS - GENAU WIE IM BILD */
 .student-grid {
 display: grid;
