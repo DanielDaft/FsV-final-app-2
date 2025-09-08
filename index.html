@@ -114,13 +114,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 */
 
-/* DROPDOWN-CONTENT UNTERSTREICHUNG FÜR FETTE TEXTE */
+/* DROPDOWN-CONTENT UNTERSTREICHUNG FÜR FETTE TEXTE - ALLE KATEGORIEN */
 .training-content h4,
 .training-content .font-medium,
 .training-items h4,
 .training-items .font-medium,
-.mb-2 {
-  text-decoration: underline;
+.training-content .mb-2,
+.training-items .mb-2,
+.training-section h4,
+.training-section .font-medium {
+  text-decoration: underline !important;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ALLE SECTION-NAMEN IN DROPDOWNS UNTERSTREICHEN */
+.training-content [class*="mb-2"],
+.training-items [class*="mb-2"],
+.training-content .section-name,
+.training-items .section-name {
+  text-decoration: underline !important;
+  font-weight: 600;
+}
+
+/* SPEZIELLE UNTERSTREICHUNG FÜR ALLE KATEGORIE-ÜBERSCHRIFTEN IM DROPDOWN */
+.training-content > .training-items > div > h4,
+.training-items > div > h4,
+.progress-item + h4,
+h4[class*="font-medium"],
+h4[class*="text-gray"] {
+  text-decoration: underline !important;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -132,6 +155,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .mb-2 {
   margin-bottom: 0.5rem;
+  text-decoration: underline;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .ml-4 {
