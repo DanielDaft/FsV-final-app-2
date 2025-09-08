@@ -3343,6 +3343,10 @@ function renderTrainingItems(sections, categoryKey, studentId) {
   const progress = StorageManager.getProgressForStudent(studentId);
   const categoryProgress = progress[categoryKey] || {};
   const comments = getCommentsForStudent(studentId);
+  
+  // Hole die Kategorie-Farbe
+  const category = TRAINING_CATEGORIES[categoryKey];
+  const categoryColor = category ? category.color : '#6b7280';
 
   function renderSection(sections, level = 0) {
     return Object.entries(sections).map(([sectionKey, section], index) => {
@@ -3381,7 +3385,7 @@ function renderTrainingItems(sections, categoryKey, studentId) {
                   💬
                 </button>
               </div>
-              ${index < Object.entries(sections).length - 1 ? '<div class="section-divider"></div>' : ''}
+              ${index < Object.entries(sections).length - 1 ? `<div class="section-divider" style="background: linear-gradient(to right, ${categoryColor} 50%, transparent 50%); background-size: 8px 1px;"></div>` : ''}
             </div>
           `;
         } else {
@@ -3410,7 +3414,7 @@ function renderTrainingItems(sections, categoryKey, studentId) {
                   </div>
                 `;
               }).join('')}
-              ${index < Object.entries(sections).length - 1 ? '<div class="section-divider"></div>' : ''}
+              ${index < Object.entries(sections).length - 1 ? `<div class="section-divider" style="background: linear-gradient(to right, ${categoryColor} 50%, transparent 50%); background-size: 8px 1px;"></div>` : ''}
             </div>
           `;
         }
@@ -3419,7 +3423,7 @@ function renderTrainingItems(sections, categoryKey, studentId) {
       return '';
     }).join('');
   }
-
+  
   return renderSection(sections);
 }
 
