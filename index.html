@@ -2664,9 +2664,11 @@ function renderStudentList() {
   let html = `
     <div class="main-header">
       <h1>FsV</h1>
-      <button class="btn-primary" onclick="showNewStudentDialog()">
-        <span>+</span> Neuer Schüler
-      </button>
+      <div class="header-right">
+        <button class="btn-primary" onclick="showNewStudentDialog()">
+          <span>+</span> Neuer Schüler
+        </button>
+      </div>
     </div>
     <div class="container">
       <div class="student-grid">
