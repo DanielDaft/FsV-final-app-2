@@ -2089,7 +2089,11 @@ const ThemeManager = {
     const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
     
     this.setTheme(initialTheme);
-    this.createToggleButton();
+    
+    // Warte bis DOM komplett geladen ist, dann Toggle hinzufügen
+    setTimeout(() => {
+      this.createToggleButton();
+    }, 500);
     
     // System-Präferenz-Änderungen überwachen
     window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
