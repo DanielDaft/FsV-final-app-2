@@ -2699,6 +2699,11 @@ function renderStudentList() {
 
   document.getElementById('main-content').innerHTML = html;
   currentView = 'list';
+  
+  // Toggle Button nach dem Rendering wieder hinzufügen
+  setTimeout(() => {
+    ThemeManager.createToggleButton();
+  }, 100);
 }
 
 function renderStudentDetail(studentId) {
