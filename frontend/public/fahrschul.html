@@ -2116,15 +2116,28 @@ const ThemeManager = {
     toggleButton.className = 'theme-toggle';
     toggleButton.innerHTML = `
       <span class="icon">🌙</span>
-      <span class="text">Dark Mode</span>
+      <span class="text">Dark</span>
     `;
     toggleButton.addEventListener('click', () => this.toggleTheme());
     
-    // Button in den Header einfügen (vor dem PDF Button)
+    // Button in den Header einfügen
     const header = document.querySelector('.main-header');
-    const pdfButton = header?.querySelector('.btn-primary');
-    if (header && pdfButton) {
-      header.insertBefore(toggleButton, pdfButton);
+    if (header) {
+      // Versuche verschiedene Positionen
+      const pdfButton = header.querySelector('.btn-primary');
+      const titleElement = header.querySelector('h1');
+      
+      if (pdfButton) {
+        header.insertBefore(toggleButton, pdfButton);
+      } else if (titleElement && titleElement.nextSibling) {
+        header.insertBefore(toggleButton, titleElement.nextSibling);
+      } else {
+        header.appendChild(toggleButton);
+      }
+      
+      console.log('✅ Dark Mode Toggle Button hinzugefügt');
+    } else {
+      console.log('❌ Header nicht gefunden für Toggle Button');
     }
   },
 
