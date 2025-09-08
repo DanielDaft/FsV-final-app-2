@@ -445,12 +445,19 @@ display: flex;
 align-items: center;
 gap: 16px;
 box-shadow: 0 1px 3px var(--shadow-color);
+position: relative;
 }
 
 .detail-header .header-left {
 display: flex;
 align-items: center;
 gap: 16px;
+}
+
+.detail-header .header-center {
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
 }
 
 .detail-header .header-right {
