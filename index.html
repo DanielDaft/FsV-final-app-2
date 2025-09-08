@@ -2731,6 +2731,11 @@ function renderStudentDetail(studentId) {
 
   document.getElementById('main-content').innerHTML = html;
   currentView = 'detail';
+  
+  // Toggle Button nach dem Rendering wieder hinzufügen
+  setTimeout(() => {
+    ThemeManager.createToggleButton();
+  }, 100);
 }
 
 function renderPersonalInfo(student) {
