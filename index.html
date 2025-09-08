@@ -138,12 +138,19 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 box-shadow: 0 1px 3px var(--shadow-color);
+position: relative;
 }
 
 .main-header .header-left {
 display: flex;
 align-items: center;
 gap: 16px;
+}
+
+.main-header .header-center {
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
 }
 
 .main-header .header-right {
