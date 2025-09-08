@@ -2136,11 +2136,21 @@ const ThemeManager = {
     `;
     toggleButton.addEventListener('click', () => this.toggleTheme());
     
-    // Finde den Header und füge Toggle hinzu
+    // Suche nach header-right Container (priorisiert)
+    const headerRight = document.querySelector('.header-right');
+    if (headerRight) {
+      // Füge als erstes Element in header-right ein
+      headerRight.insertBefore(toggleButton, headerRight.firstChild);
+      console.log('✅ Toggle in header-right eingefügt');
+      this.updateToggleButton();
+      return;
+    }
+    
+    // Fallback: Suche nach Header
     const possibleHeaders = [
       document.querySelector('.main-header'),
+      document.querySelector('.detail-header'),
       document.querySelector('header'),
-      document.querySelector('.header'),
       document.querySelector('[class*="header"]')
     ];
     
@@ -2148,21 +2158,9 @@ const ThemeManager = {
     for (const header of possibleHeaders) {
       if (header) {
         console.log('Header gefunden:', header.className);
-        
-        // Versuche den Toggle rechts neben dem Titel zu platzieren
-        const titleElement = header.querySelector('h1, .title, [class*="title"]');
-        const buttonContainer = header.querySelector('.btn-primary')?.parentElement;
-        
-        if (buttonContainer) {
-          buttonContainer.insertBefore(toggleButton, buttonContainer.firstChild);
-        } else if (titleElement) {
-          titleElement.parentElement.appendChild(toggleButton);
-        } else {
-          header.appendChild(toggleButton);
-        }
-        
+        header.appendChild(toggleButton);
         headerFound = true;
-        console.log('✅ Dark Mode Toggle Button hinzugefügt');
+        console.log('✅ Toggle als Fallback zu Header hinzugefügt');
         break;
       }
     }
