@@ -2155,17 +2155,17 @@ const ThemeManager = {
     `;
     toggleButton.addEventListener('click', () => this.toggleTheme());
     
-    // Suche nach header-right Container (priorisiert)
-    const headerRight = document.querySelector('.header-right');
-    if (headerRight) {
-      // Füge als erstes Element in header-right ein
-      headerRight.insertBefore(toggleButton, headerRight.firstChild);
-      console.log('✅ Toggle in header-right eingefügt');
+    // Suche nach header-left Container (priorisiert) - für konsistente Position links
+    const headerLeft = document.querySelector('.header-left');
+    if (headerLeft) {
+      // Füge als erstes Element in header-left ein
+      headerLeft.insertBefore(toggleButton, headerLeft.firstChild);
+      console.log('✅ Toggle oben links in header-left eingefügt');
       this.updateToggleButton();
       return;
     }
     
-    // Fallback: Suche nach Header
+    // Fallback: Suche nach Header und füge links hinzu
     const possibleHeaders = [
       document.querySelector('.main-header'),
       document.querySelector('.detail-header'),
@@ -2177,9 +2177,10 @@ const ThemeManager = {
     for (const header of possibleHeaders) {
       if (header) {
         console.log('Header gefunden:', header.className);
-        header.appendChild(toggleButton);
+        // Füge als erstes Element hinzu (ganz links)
+        header.insertBefore(toggleButton, header.firstChild);
         headerFound = true;
-        console.log('✅ Toggle als Fallback zu Header hinzugefügt');
+        console.log('✅ Toggle als Fallback links zu Header hinzugefügt');
         break;
       }
     }
