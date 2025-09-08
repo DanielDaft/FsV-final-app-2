@@ -2197,14 +2197,11 @@ const ThemeManager = {
     const toggleButton = document.querySelector('.theme-toggle');
     if (toggleButton) {
       const icon = toggleButton.querySelector('.icon');
-      const text = toggleButton.querySelector('.text');
       
       if (this.currentTheme === 'dark') {
         icon.textContent = '☀️';
-        text.textContent = 'Light Mode';
       } else {
         icon.textContent = '🌙';
-        text.textContent = 'Dark Mode';
       }
     }
   }
