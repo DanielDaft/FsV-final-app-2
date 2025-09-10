@@ -3395,18 +3395,11 @@ function renderTrainingProgress(student) {
   `;
 
   Object.entries(TRAINING_CATEGORIES).forEach(([key, category]) => {
-    // NEUE FORTSCHRITTS-BERECHNUNG (3-Stufen System)
-    const percentage = calculateCategoryProgress(student, key);
-    const totalItems = countTotalItems(category.sections);
-    
-    // FARBKODIERUNG BASIEREND AUF FORTSCHRITT
-    const progressColor = getProgressColor(percentage);
-    const textColor = getProgressTextColor(percentage);
-    
-    // Alte completedItems Berechnung für die Anzeige (x/y Format)
     const progress = StorageManager.getProgressForStudent(student.id);
     const categoryProgress = progress[key] || {};
+    
     let completedItems = 0;
+    const totalItems = countTotalItems(category.sections);
 
     function countCompletedItems(sections) {
       Object.entries(sections).forEach(([sectionKey, section]) => {
@@ -3425,15 +3418,17 @@ function renderTrainingProgress(student) {
 
     countCompletedItems(category.sections);
 
+    // VERWENDE DIE NEUE 3-STUFEN BERECHNUNG
+    const percentage = calculateOverallProgress({id: student.id}); // Nutze die verbesserte Berechnung
     const expanded = key === 'grundstufe';
 
     html += `
       <div class="training-section">
-        <div class="training-header ${key}" onclick="toggleTrainingSection('${key}')" style="background: ${progressColor}; color: ${textColor};">
-          ${(key === 'grundstufe' || key === 'aufbaustufe' || key === 'leistungsstufe' || key === 'grundfahraufgaben') ? renderCategoryHeaderWithCircles(student.id, category, key, percentage, completedItems, totalItems, progressColor, textColor) : 
-            (key === 'uberlandfahrten') ? renderSpecialFahrtenHeader(student.id, category, key, percentage, completedItems, totalItems, 5, progressColor, textColor) :
-            (key === 'autobahn') ? renderSpecialFahrtenHeader(student.id, category, key, percentage, completedItems, totalItems, 4, progressColor, textColor) :
-            (key === 'dammerung_dunkelheit') ? renderSpecialFahrtenHeader(student.id, category, key, percentage, completedItems, totalItems, 3, progressColor, textColor) : `
+        <div class="training-header ${key}" onclick="toggleTrainingSection('${key}')">
+          ${(key === 'grundstufe' || key === 'aufbaustufe' || key === 'leistungsstufe' || key === 'grundfahraufgaben') ? renderCategoryHeaderWithCircles(student.id, category, key, percentage, completedItems, totalItems) : 
+            (key === 'uberlandfahrten') ? renderSpecialFahrtenHeader(student.id, category, key, percentage, completedItems, totalItems, 5) :
+            (key === 'autobahn') ? renderSpecialFahrtenHeader(student.id, category, key, percentage, completedItems, totalItems, 4) :
+            (key === 'dammerung_dunkelheit') ? renderSpecialFahrtenHeader(student.id, category, key, percentage, completedItems, totalItems, 3) : `
             <div class="training-info-with-circles">
               <div class="training-info">
                 <h3>${category.name}</h3>
