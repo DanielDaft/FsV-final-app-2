@@ -3001,8 +3001,8 @@ function calculateOverallProgress(student) {
               weightedCompletedPoints += 0.3333; // / = 33,33%
             } else if (status === 'twice') {
               weightedCompletedPoints += 0.6667; // X = 66,67%
-            } else if (status === 'done') {
-              weightedCompletedPoints += 1.0;    // ⭕X = 100%
+            } else if (status === 'thrice') {
+              weightedCompletedPoints += 1.0;    // ⊗ = 100%
             }
             // 'not_started' = 0% (nichts addieren)
           });
