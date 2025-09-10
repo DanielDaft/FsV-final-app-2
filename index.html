@@ -2975,7 +2975,7 @@ function formatGermanDate(dateString) {
 
 function calculateOverallProgress(student) {
   let totalItems = 0;
-  let completedItems = 0;
+  let weightedCompletedPoints = 0; // Gewichtete Punkte statt einfache Zählung
 
   Object.keys(TRAINING_CATEGORIES).forEach(categoryKey => {
     const category = TRAINING_CATEGORIES[categoryKey];
@@ -2988,25 +2988,32 @@ function calculateOverallProgress(student) {
     const category = TRAINING_CATEGORIES[categoryKey];
     const categoryProgress = progress[categoryKey] || {};
 
-    function countCompletedItems(sections) {
+    function countWeightedProgress(sections) {
       Object.entries(sections).forEach(([sectionKey, section]) => {
         if (section.sections) {
-          countCompletedItems(section.sections);
+          countWeightedProgress(section.sections);
         } else if (section.items) {
           section.items.forEach(item => {
             const status = categoryProgress[sectionKey] && categoryProgress[sectionKey][item];
-            if (status && status !== 'not_started') {
-              completedItems++;
+            
+            // 3-STUFEN GEWICHTUNG:
+            if (status === 'once') {
+              weightedCompletedPoints += 0.3333; // / = 33,33%
+            } else if (status === 'twice') {
+              weightedCompletedPoints += 0.6667; // X = 66,67%
+            } else if (status === 'done') {
+              weightedCompletedPoints += 1.0;    // ⭕X = 100%
             }
+            // 'not_started' = 0% (nichts addieren)
           });
         }
       });
     }
 
-    countCompletedItems(category.sections);
+    countWeightedProgress(category.sections);
   });
 
-  return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+  return totalItems > 0 ? Math.round((weightedCompletedPoints / totalItems) * 100) : 0;
 }
 
 // Gesamtanzahl Items rekursiv zählen
