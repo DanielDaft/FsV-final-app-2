@@ -1,20 +1,18 @@
-// Deutsche Fahrschul-App Service Worker
-// Für komplette Offline-Funktionalität
+// Deutsche Fahrschul-App Service Worker - GitHub Pages Version
+const CACHE_NAME = 'fahrschul-app-v1.1';
+const OFFLINE_URL = '/FsV-final-app/frontend/public/offline.html';
 
-const CACHE_NAME = 'fahrschul-app-v1.0';
-const OFFLINE_URL = '/offline.html';
-
-// Files zum Cachen für Offline-Nutzung
+// Files zum Cachen für Offline-Nutzung - MIT KORREKTEN GITHUB PAGES PFADEN
 const FILES_TO_CACHE = [
-  '/',
-  '/fahrschul.html',
-  '/manifest.json',
+  '/FsV-final-app/',
+  '/FsV-final-app/index.html',
+  '/FsV-final-app/frontend/public/manifest.json',
   OFFLINE_URL
 ];
 
 // Installation
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing...');
+  console.log('[SW] Installing Fahrschul-App...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -24,6 +22,9 @@ self.addEventListener('install', (event) => {
       .then(() => {
         console.log('[SW] Installation complete');
         return self.skipWaiting();
+      })
+      .catch((error) => {
+        console.error('[SW] Installation failed:', error);
       })
   );
 });
@@ -48,7 +49,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Handler - Cache First Strategy
+// Fetch Handler - Cache First Strategy mit GitHub Pages Support
 self.addEventListener('fetch', (event) => {
   // Nur GET requests cachen
   if (event.request.method !== 'GET') return;
