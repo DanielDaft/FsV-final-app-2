@@ -4915,6 +4915,28 @@ function initMobileLayoutObserver() {
 document.addEventListener('DOMContentLoaded', function() {
   console.log('📱 DOM geladen, starte professionelle App nach Ihren Bildern...');
   
+  // PWA Service Worker registrieren (iOS & Android)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/app/frontend/public/sw.js')
+      .then((registration) => {
+        console.log('✅ PWA: Service Worker registered', registration);
+        
+        // iOS Installation Prompt nach App-Start
+        setTimeout(() => showIOSInstallPrompt(), 5000);
+      })
+      .catch((error) => {
+        console.log('❌ PWA: Service Worker registration failed', error);
+      });
+  }
+  
+  // Standard Installation Prompt (Android)
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(() => showInstallPrompt(deferredPrompt), 3000);
+  });
+  
   // DIREKTE LÖSUNG: APP SOFORT STARTEN
   const directStart = () => {
     console.log('🚀 Direkter Start der App...');
