@@ -4917,7 +4917,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // PWA Service Worker registrieren (iOS & Android)
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/app/frontend/public/sw.js')
+    navigator.serviceWorker.register('frontend/public/sw.js')
       .then((registration) => {
         console.log('✅ PWA: Service Worker registered', registration);
         
