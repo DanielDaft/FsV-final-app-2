@@ -3784,10 +3784,10 @@ function renderCategoryHeaderWithCircles(studentId, category, categoryKey, perce
       </div>
     </div>
     <div class="training-progress">
-      <div class="progress-circle"></div>
-      <div class="progress-text">${percentage}%</div>
-      <div class="progress-count">(${completedItems}/${totalItems})</div>
-      <div class="dropdown-arrow">▼</div>
+      <div class="progress-circle" style="background: ${textColor}; opacity: 0.8;"></div>
+      <div class="progress-text" style="color: ${textColor};">${percentage}%</div>
+      <div class="progress-count" style="color: ${textColor}; opacity: 0.8;">(${completedItems}/${totalItems})</div>
+      <div class="dropdown-arrow" style="color: ${textColor};">▼</div>
     </div>
   `;
 }
