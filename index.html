@@ -3425,8 +3425,8 @@ function renderTrainingProgress(student) {
             (key === 'dammerung_dunkelheit') ? renderSpecialFahrtenHeader(student.id, category, key, percentage, completedItems, totalItems, 3, progressColor, textColor) : `
             <div class="training-info-with-circles">
               <div class="training-info">
-                <h3 style="color: ${textColor};">${category.name}</h3>
-                ${category.subtitle ? `<div class="training-subtitle" style="color: ${textColor}; opacity: 0.9;">${category.subtitle}</div>` : ''}
+                <h3>${category.name}</h3>
+                ${category.subtitle ? `<div class="training-subtitle">${category.subtitle}</div>` : ''}
               </div>
             </div>
             <div class="training-progress">
