@@ -3016,61 +3016,6 @@ function calculateOverallProgress(student) {
   return totalItems > 0 ? Math.round((weightedCompletedPoints / totalItems) * 100) : 0;
 }
 
-// NEUE FUNKTION: Berechne Fortschritt für eine spezifische Kategorie
-function calculateCategoryProgress(student, categoryKey) {
-  const category = TRAINING_CATEGORIES[categoryKey];
-  if (!category) return 0;
-  
-  let totalItems = 0;
-  let weightedCompletedPoints = 0;
-  
-  // Zähle Gesamtanzahl Items in dieser Kategorie
-  totalItems = countTotalItems(category.sections);
-  
-  const progress = StorageManager.getProgressForStudent(student.id);
-  const categoryProgress = progress[categoryKey] || {};
-
-  function countWeightedProgress(sections) {
-    Object.entries(sections).forEach(([sectionKey, section]) => {
-      if (section.sections) {
-        countWeightedProgress(section.sections);
-      } else if (section.items) {
-        section.items.forEach(item => {
-          const status = categoryProgress[sectionKey] && categoryProgress[sectionKey][item];
-          
-          // 3-STUFEN GEWICHTUNG:
-          if (status === 'once') {
-            weightedCompletedPoints += 0.3333; // / = 33,33%
-          } else if (status === 'twice') {
-            weightedCompletedPoints += 0.6667; // X = 66,67%
-          } else if (status === 'thrice') {
-            weightedCompletedPoints += 1.0;    // ⊗ = 100%
-          }
-        });
-      }
-    });
-  }
-
-  countWeightedProgress(category.sections);
-  return totalItems > 0 ? Math.round((weightedCompletedPoints / totalItems) * 100) : 0;
-}
-
-// NEUE FUNKTION: Bestimme Fortschrittsfarbe
-function getProgressColor(progressPercentage) {
-  if (progressPercentage >= 67) {
-    return '#22C55E'; // Grün (67-100%)
-  } else if (progressPercentage >= 34) {
-    return '#EAB308'; // Gelb (34-66%)
-  } else {
-    return '#EF4444'; // Rot (0-33%)
-  }
-}
-
-// NEUE FUNKTION: Bestimme Fortschritts-Text-Farbe (für besseren Kontrast)
-function getProgressTextColor(progressPercentage) {
-  return 'white'; // Weiße Schrift auf allen farbigen Hintergründen
-}
-
 // Gesamtanzahl Items rekursiv zählen
 function countTotalItems(sections) {
   let total = 0;
