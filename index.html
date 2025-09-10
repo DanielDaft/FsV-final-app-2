@@ -5133,6 +5133,150 @@ function showTrainingView() {
   }
 }
 
+// PWA iOS Installation Prompt
+function showIOSInstallPrompt() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isStandalone = window.navigator.standalone;
+  
+  if (isIOS && !isStandalone) {
+    // Prüfe ob Benutzer bereits informiert wurde (heute)
+    const lastPrompt = localStorage.getItem('ios-install-prompt-date');
+    const today = new Date().toDateString();
+    
+    if (lastPrompt !== today) {
+      setTimeout(() => {
+        const installMsg = `📱 Diese Fahrschul-App kann als native App installiert werden!\n\n👆 Tippe auf das Teilen-Symbol (⤴️) unten\n📋 Wähle "Zum Home-Bildschirm"\n✅ Die App funktioniert dann komplett offline!\n\nSoll ich dir das nochmal zeigen?`;
+        
+        if (confirm(installMsg)) {
+          // Detaillierte Anweisungen
+          alert(`📱 INSTALLATION AUF iOS:\n\n1️⃣ Tippe unten auf das Teilen-Symbol ⤴️\n2️⃣ Scrolle nach unten\n3️⃣ Tippe "Zum Home-Bildschirm"\n4️⃣ Tippe "Hinzufügen"\n\n✅ Fertig! Die App ist jetzt offline verfügbar.`);
+        }
+        
+        localStorage.setItem('ios-install-prompt-date', today);
+      }, 8000); // Nach 8 Sekunden zeigen
+    }
+  }
+}
+
+// Standard Installation Prompt (Android/Chrome)
+function showInstallPrompt(deferredPrompt) {
+  const installBanner = document.createElement('div');
+  installBanner.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
+    z-index: 1000;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+  `;
+  
+  installBanner.innerHTML = `
+    <div style="margin-bottom: 8px;">📱 Diese App offline installieren?</div>
+    <div style="font-size: 12px; opacity: 0.9; margin-bottom: 12px;">Funktioniert ohne Internet!</div>
+    <div style="display: flex; gap: 12px; justify-content: center;">
+      <button onclick="this.parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.2); border: none; padding: 8px 16px; border-radius: 6px; color: white; cursor: pointer;">Später</button>
+      <button id="install-btn" style="background: white; border: none; padding: 8px 16px; border-radius: 6px; color: #2563eb; font-weight: 600; cursor: pointer;">Installieren</button>
+    </div>
+  `;
+  
+  // CSS Animation hinzufügen
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  document.body.appendChild(installBanner);
+  
+  // Install Button Event
+  document.getElementById('install-btn').onclick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('✅ PWA wurde installiert');
+        }
+        installBanner.remove();
+      });
+    }
+  };
+  
+  // Auto-hide nach 15 Sekunden
+  setTimeout(() => {
+    if (installBanner.parentNode) {
+      installBanner.remove();
+    }
+  }, 15000);
+}
+
+// Offline/Online Status Detection
+window.addEventListener('online', () => {
+  console.log('📶 App ist wieder online');
+  showToast('📶 Verbindung wiederhergestellt', 'success');
+});
+
+window.addEventListener('offline', () => {
+  console.log('📱 App ist offline - funktioniert trotzdem!');
+  showToast('📱 Offline-Modus aktiv', 'info');
+});
+
+// Toast Notification System
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  const bgColor = type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6';
+  
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${bgColor};
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 1001;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    animation: slideInRight 0.3s ease;
+  `;
+  
+  toast.innerHTML = message;
+  
+  // Animation CSS
+  if (!document.querySelector('#toast-styles')) {
+    const toastStyles = document.createElement('style');
+    toastStyles.id = 'toast-styles';
+    toastStyles.textContent = `
+      @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(toastStyles);
+  }
+  
+  document.body.appendChild(toast);
+  
+  // Auto-remove nach 3 Sekunden
+  setTimeout(() => {
+    if (toast.parentNode) {
+      toast.remove();
+    }
+  }, 3000);
+}
+
 </script>
 </body>
 </html>
