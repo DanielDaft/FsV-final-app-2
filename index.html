@@ -3016,6 +3016,17 @@ function calculateOverallProgress(student) {
   return totalItems > 0 ? Math.round((weightedCompletedPoints / totalItems) * 100) : 0;
 }
 
+// Bestimme Fortschrittsfarbe für den kleinen Punkt
+function getProgressColor(progressPercentage) {
+  if (progressPercentage >= 67) {
+    return '#22C55E'; // Grün (67-100%)
+  } else if (progressPercentage >= 34) {
+    return '#EAB308'; // Gelb (34-66%)
+  } else {
+    return '#EF4444'; // Rot (0-33%)
+  }
+}
+
 // Gesamtanzahl Items rekursiv zählen
 function countTotalItems(sections) {
   let total = 0;
